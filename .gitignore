@@ -1,4 +1,5 @@
 INSTRUCTIONS.*
+db/db.json
 # Logs
 logs
 *.log
