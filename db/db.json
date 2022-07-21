@@ -1,6 +1,29 @@
-[
+{
+  "notes": [
     {
-        "title":"Test Title",
-        "text":"Test text"
+      "id": "1e9423de118f417b936f28b2dcbbc042",
+      "title": "Teeth",
+      "text": "Don't forget to floss!"
+    },
+    {
+      "id": "d636c2cfbd034dc8a9db964932e5ec1a",
+      "title": "Eyes",
+      "text": "Don't forget to wear your glasses!"
+    },
+    {
+      "id": "5f3fff9008e2474da302aa50e58c6432",
+      "title": "Skin",
+      "text": "Use moisturizer!"
+    },
+    {
+      "id": "c27cce00e2a0443fb69f919b2a6db0c9",
+      "title": "Nails",
+      "text": "Don't let em get nasty"
+    },
+    {
+      "id": "9faf6184232d490a9a811fd8c8fe1503",
+      "title": "Tongue",
+      "text": "For the love of Gob don't brush it"
     }
-]
+  ]
+}
