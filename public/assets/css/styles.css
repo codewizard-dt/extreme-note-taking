@@ -5,6 +5,19 @@ body {
   padding: 0;
 }
 
+body {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+body > .container-fluid {
+  flex: 1;
+}
+
+body > .container-fluid > .row {
+  height: 100%;
+}
+
 .save-note {
   display: none;
 }
@@ -14,6 +27,11 @@ body {
   margin-right: 15px;
   font-size: 1.5rem;
   cursor: pointer;
+}
+
+#note {
+  display: flex;
+  flex-flow: column nowrap;
 }
 
 .note-textarea,
@@ -26,14 +44,16 @@ body {
 
 .note-textarea {
   resize: none;
-  height: calc(100% - 63px);
-  padding-top: 15px;
+  flex: 1;
+  /* height: calc(100% - 63px); */
+  /* padding-top: 15px; */
 }
 
 .note-title {
-  height: 50px;
+  /* height: 50px; */
   margin-top: 13px;
   font-size: 3rem;
+  padding: 0;
 }
 
 .note-title:read-only,
@@ -49,7 +69,8 @@ body {
 }
 
 .list-container {
-  padding-left: 0;
+  padding: 0;
+  border-right: 1px solid rgba(0, 0, 0, 0.125)
 }
 
 .list-container .list-group,

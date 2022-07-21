@@ -32,7 +32,6 @@ app.post('/api/notes', (req, res) => {
 })
 app.delete('/api/notes/:id', (req, res) => {
   let { id } = req.params
-  console.log(id)
   Note.remove(id)
   res.json(true)
 })

@@ -47,7 +47,6 @@ class JsonDB {
   }
   readFile() {
     let filepath = this.getFilePath()
-    console.log(filepath)
     return this.fileExists() ? fs.readFileSync(filepath, 'utf8') : '{}'
   }
   parsedFile() {
