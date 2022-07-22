@@ -6,9 +6,10 @@ const DB = new JsonDB('../../db/db.json')
 class Note {
   static DB = DB
   static add(note) {
+    console.log('ADD', note)
     note = new Note(note)
     let { id, title, text } = note
-    this.DB.addToCollection('notes', { id, title, text })
+    this.DB.addToCollectionOrUpdate('notes', { id, title, text })
     return note
   }
   static remove(noteId) {
@@ -21,7 +22,7 @@ class Note {
   constructor({ title, text, id }) {
     this.title = title
     this.text = text
-    if (!id) this.id = uuid()
+    this.id = id ? id : uuid()
   }
 
   toObject() {

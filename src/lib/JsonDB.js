@@ -10,12 +10,15 @@ class JsonDB {
     if (this.fileExists()) this.data = this.parsedFile()
   }
 
-  addToCollection(collectionName, item) {
+  addToCollectionOrUpdate(collectionName, item) {
     const collection = this.getCollection(collectionName)
-    if (collection.find(existing => existing.id !== item.id)) {
+    let record = collection.find(existing => existing.id === item.id)
+    if (record === undefined) {
       collection.push(item)
-      this.setCollection(collectionName, collection)
+    } else {
+      collection.splice(collection.indexOf(record), 1, item)
     }
+    this.setCollection(collectionName, collection)
   }
   setCollection(collectionName, data) {
     this.data[collectionName] = data

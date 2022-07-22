@@ -43,8 +43,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, './src/pages/index.html'));
 })
 
-
-
 app.listen(port, () => {
   console.log(`App listening at http://localhost:3001`)
 })
