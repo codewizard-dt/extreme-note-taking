@@ -97,3 +97,8 @@ body > .container-fluid > .row {
   padding: 20px;
   cursor: pointer;
 }
+
+.timestamp {
+  opacity: 0.6;
+  font-size: 0.8em;
+}

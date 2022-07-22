@@ -1,8 +1,11 @@
+
 let noteTitle;
 let noteText;
 let saveNoteBtn;
 let newNoteBtn;
 let noteList;
+let timestampCreated;
+let timestampEdited;
 
 if (window.location.pathname === '/notes') {
   noteTitle = document.querySelector('.note-title');
@@ -10,6 +13,8 @@ if (window.location.pathname === '/notes') {
   saveNoteBtn = document.querySelector('.save-note');
   newNoteBtn = document.querySelector('.new-note');
   noteList = document.querySelectorAll('.list-container .list-group');
+  timestampCreated = document.querySelector('.timestamp.created');
+  timestampEdited = document.querySelector('.timestamp.edited');
 }
 
 // Show an element
@@ -51,14 +56,18 @@ const deleteNote = (id) =>
   });
 
 const renderActiveNote = () => {
-  // hide(saveNoteBtn);
-
   if (activeNote.id) {
+
     noteTitle.value = activeNote.title;
     noteText.value = activeNote.text;
+    let date = timestampToDisplay(activeNote.created);
+    timestampCreated.textContent = `Created: ${timestampToDisplay(activeNote.created)}`;
+    timestampEdited.textContent = `Edited: ${timestampToDisplay(activeNote.edited)}`;
   } else {
     noteTitle.value = '';
     noteText.value = '';
+    timestampCreated.textContent = '';
+    timestampEdited.textContent = '';
   }
 };
 
@@ -69,9 +78,13 @@ const handleNoteSave = () => {
   };
   if (activeNote.id) {
     newNote.id = activeNote.id
+    newNote.created = activeNote.created
+    newNote.edited = activeNote.edited
+
     activeNote = newNote
   }
   saveNote(newNote).then(() => {
+    hide(saveNoteBtn)
     getAndRenderNotes();
     renderActiveNote();
   });
@@ -110,12 +123,24 @@ const handleNewNoteView = (e) => {
 };
 
 const handleRenderSaveBtn = () => {
-  if (!noteTitle.value.trim() || !noteText.value.trim()) {
+  let titleValue = noteTitle.value.trim()
+  let textValue = noteText.value.trim()
+  let { title, text } = activeNote
+  if (!titleValue || !textValue) {
     hide(saveNoteBtn);
-  } else {
+  } else if (titleValue !== title || textValue !== text) {
     show(saveNoteBtn);
+  } else if (titleValue === title && textValue === text) {
+    hide(saveNoteBtn)
   }
 };
+
+const handleMetaEnterPress = (ev) => {
+  const { key, metaKey } = ev
+  if (key === 'Enter' && metaKey && saveNoteBtn.style.display !== 'none') {
+    handleNoteSave()
+  }
+}
 
 // Render the list of note titles
 const renderNoteList = async (notes) => {
@@ -155,6 +180,7 @@ const renderNoteList = async (notes) => {
     return liEl;
   };
 
+  jsonNotes = jsonNotes.sort(({ edited: e1 }, { edited: e2 }) => e2 - e1)
   if (jsonNotes.length === 0) {
     noteListItems.push(createLi('No saved Notes', false));
   }
@@ -162,14 +188,32 @@ const renderNoteList = async (notes) => {
   jsonNotes.forEach((note) => {
     const li = createLi(note.title);
     li.dataset.note = JSON.stringify(note);
-
     noteListItems.push(li);
+    if (note.id === activeNote.id) {
+      console.log({ note: note.edited, activeNote: activeNote.edited })
+      activeNote = note
+    }
   });
 
   if (window.location.pathname === '/notes') {
     noteListItems.forEach((note) => noteList[0].append(note));
+    renderActiveNote()
   }
 };
+
+function fromTimestamp(millis) {
+  return luxon.DateTime.fromMillis(millis)
+}
+
+function formatForDisplay(dt) {
+  let display = dt.toLocaleString(luxon.DateTime.DATETIME_SHORT)
+  return display
+}
+
+function timestampToDisplay(millis) {
+  return formatForDisplay(fromTimestamp(millis))
+}
+
 
 // Gets notes from the db and renders them to the sidebar
 const getAndRenderNotes = () => getNotes().then(renderNoteList);
@@ -179,6 +223,8 @@ if (window.location.pathname === '/notes') {
   newNoteBtn.addEventListener('click', handleNewNoteView);
   noteTitle.addEventListener('keyup', handleRenderSaveBtn);
   noteText.addEventListener('keyup', handleRenderSaveBtn);
+  noteTitle.addEventListener('keydown', handleMetaEnterPress);
+  noteText.addEventListener('keydown', handleMetaEnterPress);
 }
 
 getAndRenderNotes();
