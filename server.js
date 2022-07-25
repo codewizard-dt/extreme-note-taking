@@ -3,7 +3,7 @@ const path = require('path')
 const Note = require('./src/lib/Note.js')
 
 const app = express()
-const port = process.env.PORT
+const port = process.env.PORT || 3001
 
 /**
  * 
