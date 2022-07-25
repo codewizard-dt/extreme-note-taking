@@ -7,7 +7,6 @@ const DB = new JsonDB('../../db/db.json')
 class Note {
   static DB = DB
   static add(note) {
-    console.log('ADD', note)
     note = new Note(note)
     let { id, title, text, created, edited } = note
     this.DB.addToCollectionOrUpdate('notes', { id, title, text, created, edited })
