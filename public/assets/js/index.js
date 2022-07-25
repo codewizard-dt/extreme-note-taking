@@ -190,7 +190,6 @@ const renderNoteList = async (notes) => {
     li.dataset.note = JSON.stringify(note);
     noteListItems.push(li);
     if (note.id === activeNote.id) {
-      console.log({ note: note.edited, activeNote: activeNote.edited })
       activeNote = note
     }
   });
